@@ -1,4 +1,4 @@
-package io.github.arkobat.evento.ui.notifications
+package io.github.arkobat.evento.ui.events
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,12 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import io.github.arkobat.evento.R
 import io.github.arkobat.evento.databinding.FragmentNotificationsBinding
 
-class NotificationsFragment : Fragment() {
+class EventsFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var eventsViewModel: EventsViewModel
     private var _binding: FragmentNotificationsBinding? = null
 
     // This property is only valid between onCreateView and
@@ -25,14 +24,14 @@ class NotificationsFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        eventsViewModel =
+                ViewModelProvider(this).get(EventsViewModel::class.java)
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        eventsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
