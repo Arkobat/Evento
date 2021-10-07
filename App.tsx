@@ -1,44 +1,64 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Backend from './Backend';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
+import { EventPreview, IEventPreview } from './components/EventPreview';
 
-const EventPreview = (props: any) => {
-  return (
-    <View style={styles.eventPreview}>
-      <Image
-        source={{ uri: props.image }}
-        style={{ width: 150, height: 100 }}
-      />
-      <Text style={{ fontWeight: 'bold' }}>{props.name}</Text>
-      <Text>{props.location}</Text>
-    </View>
-  );
+
+class EventList extends Component {
+  state: {
+    events: IEventPreview[],
+    loading: boolean
+  } = {
+      events: [],
+      loading: true
+    }
+
+  async componentDidMount() {
+    var loadedEvents = await Backend.GetEventOverview();
+    this.setState({
+      events: loadedEvents,
+      loading: false
+    })
+  }
+
+  render(): any {
+    return (
+      <View>
+        <Text style={{ fontWeight: 'bold', fontSize: 24, margin: 15 }}>Upcoming Events</Text>
+        {
+          this.state.loading ? <ActivityIndicator /> :
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <EventPreview name='Beer Pong' location='Nedenunder' image='https://images.interactives.dk/beerpong-woman-dk-M_gSy7-yyJsqSjEXUI8hkQ.jpg' />
+              <EventPreview name='Banko' location='Storms Pakhus' image='https://picsum.photos/150/100?blur=10' />
+              <EventPreview name='Software Dysten' location='SDU' image='https://picsum.photos/150/100?blur=10' />
+              <EventPreview name="Have's indflytterfest" location='Haves kærestes lejlighed' image='https://picsum.photos/150/100?blur=10' />
+              <EventPreview name='Amilcar pension fest' location='Plejehjemmet' image='https://picsum.photos/150/100?blur=10' />
+              <EventPreview name='Jonathan konfirmation' location='Jonathans forældre' image='https://picsum.photos/150/100?blur=10' />
+
+            </ScrollView>
+        }
+      </View>
+    )
+  }
 }
 
 
 function Explore() {
+  Backend.GetEventOverview().then(data => {
+    console.log(data)
+  })
+
   return (
     <View>
-      <View>
-        <Text style={{ fontWeight: 'bold', fontSize: 24, margin: 15 }}>Upcoming Events</Text>
-      </View>
-      <View>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-        >
-          <EventPreview name='Beer Pong' location='Nedenunder' image='https://images.interactives.dk/beerpong-woman-dk-M_gSy7-yyJsqSjEXUI8hkQ.jpg' />
-          <EventPreview name='Banko' location='Storms Pakhus' image='https://picsum.photos/150/100?blur=10' />
-          <EventPreview name='Software Dysten' location='SDU' image='https://picsum.photos/150/100?blur=10' />
-          <EventPreview name="Have's indflytterfest" location='Haves kærestes lejlighed' image='https://picsum.photos/150/100?blur=10' />
-          <EventPreview name='Amilcar pension fest' location='Plejehjemmet' image='https://picsum.photos/150/100?blur=10' />
-          <EventPreview name='Jonathan konfirmation' location='Jonathans forældre' image='https://picsum.photos/150/100?blur=10' />
-        </ScrollView>
-      </View>
+      <EventList />
       <View>
         <ScrollView>
           <EventPreview name='Random Event #1' location='LA Bar' image='https://picsum.photos/150/100?grayscale&blur=10' />
@@ -82,7 +102,7 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Map"
+      initialRouteName="Explore"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
       }}
