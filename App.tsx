@@ -1,18 +1,12 @@
 import React, { Component, ReactNode } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Explore from './views/Explore';
 import EventView from './views/Event';
+import MapScreen from './views/Map';
 
-function Map() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Map!</Text>
-    </View>
-  );
-}
 
 function Profile() {
   return (
@@ -29,6 +23,7 @@ function MyTabs() {
     <Tab.Navigator
       initialRouteName="Events"
       screenOptions={{
+        //headerShown: false,
         tabBarActiveTintColor: '#e91e63',
       }}
     >
@@ -36,6 +31,7 @@ function MyTabs() {
         name="Explore"
         component={Explore}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="compass" color={color} size={size} />
           ),
@@ -45,6 +41,7 @@ function MyTabs() {
         name="Events"
         component={EventView}
         options={{
+          header: undefined,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="calendar" color={color} size={size} />
           ),
@@ -52,8 +49,9 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Map"
-        component={Map}
+        component={MapScreen}
         options={{
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="map-marker" color={color} size={size} />
           ),
@@ -75,7 +73,7 @@ function MyTabs() {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <MyTabs />
     </NavigationContainer>
   );

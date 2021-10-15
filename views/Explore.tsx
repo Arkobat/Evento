@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ScrollView, View, Text, ActivityIndicator, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Backend from "../Backend";
 import { EventPreview, IEventPreview } from "../components/EventPreview";
 
@@ -22,7 +23,7 @@ class EventList extends Component {
 
   render(): any {
     return (
-      <View>
+      <SafeAreaView>
         <Text style={{ fontWeight: 'bold', fontSize: 24, margin: 15 }}>Upcoming Events</Text>
         {
           this.state.loading ? <ActivityIndicator /> :
@@ -39,7 +40,7 @@ class EventList extends Component {
 
             </ScrollView>
         }
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -47,7 +48,7 @@ class EventList extends Component {
 const Discover = () => {
   return (
     <View>
-      <Text style={{ fontWeight: 'bold', fontSize: 24, margin: 15 }}>You might enjoy</Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 24, margin: 15 }}>Nearby You</Text>
       <EventPreview id='d1' name='Åbnings fest - HAPPY HOUR x LIVE MUSIK' location='LA Bar' image='https://picsum.photos/150/100?grayscale&blur=10' />
       <EventPreview id='d2' name='Random Event #2' location='Jonathans opgang' image='https://picsum.photos/150/100?grayscale&blur=10' />
       <EventPreview id='d3' name='Random Event #3' location='Jonathans køkken' image='https://picsum.photos/150/100?grayscale&blur=10' />

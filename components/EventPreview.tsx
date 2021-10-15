@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Image, Pressable, Alert, Dimensions } from 'react-native';
 
 const boxMargin = 10;
-const imgWidth = Dimensions.get('window').width - boxMargin * 2
+const imgWidth = Dimensions.get('screen').width - boxMargin * 2
 const imgHeight = imgWidth * 9 / 16
 
 export interface IEventPreview {
