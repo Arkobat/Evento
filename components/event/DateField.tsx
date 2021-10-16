@@ -1,7 +1,6 @@
 import React from 'react';
 import { format } from "date-fns";
 import { StyleSheet, Text, View, Image, Pressable, Alert, Dimensions } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Field } from './AbstractField';
 
 export interface IDateField {

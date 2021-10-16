@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, FC } from 'react';
 import { StyleSheet, Text, View, Image, Pressable, Alert, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import openMap from 'react-native-open-maps';
 
 interface IField {
     icon: {
@@ -11,26 +10,22 @@ interface IField {
         type: 'icon'
         path: React.ComponentProps<typeof MaterialCommunityIcons>['name']
     }
-    children: JSX.Element
 }
 
-function Field(props: IField) {
+const Field: FC<IField> = (props) => {
     return (
         <View style={styles.box}>
             {
                 props.icon.type === 'url' ?
                     <Image style={styles.logoBox} source={{ uri: props.icon.path }} /> :
                     <View style={[styles.logoBox, styles.iconBox]}>
-                        <MaterialCommunityIcons name={props.icon.path} size={35} color='dodgerblue' />
+                        <MaterialCommunityIcons name={props.icon.path} size={35} color='royalblue' />
                     </View>
             }
             {props.children}
         </View>
     );
 }
-/*
-
-*/
 
 const styles = StyleSheet.create({
     logoBox: {

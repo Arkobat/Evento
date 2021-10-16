@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, FlatList, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Explore from './views/Explore';
-import EventView from './views/Event';
 import MapScreen from './views/Map';
+import EventView from './views/Event';
 
 
 function Profile() {
@@ -21,9 +21,9 @@ const Tab = createBottomTabNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Events"
+      initialRouteName="Explore"
       screenOptions={{
-        //headerShown: false,
+        headerTransparent: true,
         tabBarActiveTintColor: '#e91e63',
       }}
     >
@@ -41,7 +41,6 @@ function MyTabs() {
         name="Events"
         component={EventView}
         options={{
-          header: undefined,
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="calendar" color={color} size={size} />
           ),

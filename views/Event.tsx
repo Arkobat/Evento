@@ -1,52 +1,13 @@
-import React from "react";
-import { View, Image, Dimensions, Text, StyleSheet, ScrollView } from "react-native";
+import React, { Component } from "react";
+import { View, Image, Dimensions, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
 import { DateField } from "../components/event/DateField";
 import { LocationField } from "../components/event/LocationField";
 import { OrginizerField } from "../components/event/OrganizerField";
+import * as AddCalendarEvent from 'react-native-add-calendar-event';
+import EventBackend from "../backend/EventBackend";
+import UserBackend from "../backend/UserBackend";
 
 const width = Dimensions.get('window').width
-
-
-interface IDiscover {
-    id: string
-    scale: number
-    name: string
-    location: {
-        name: string
-        address: string
-    }
-    date: {
-        start: Date
-        end: Date
-    }
-    orginizer: {
-        name: string,
-        avatar?: string
-    }
-    image: string
-    description: string
-}
-
-const Discover = (props: IDiscover) => {
-    return (
-        <ScrollView bounces={false}  >
-            <Image
-                source={{ uri: props.image }}
-                style={{ width: width, height: width * 9 / 16 }}
-                resizeMode={'cover'}
-            />
-            <View style={{ marginLeft: 25, marginRight: 25 }}>
-                <Text numberOfLines={2} style={styles.title}>{props.name}</Text>
-                <DateField start={props.date.start} end={props.date.end} />
-                <LocationField name={props.location.name} location={props.location.address} />
-                <OrginizerField name={props.orginizer.name} logo={props.orginizer.avatar} />
-
-                <Text style={styles.heading}>Event Description</Text>
-                <Text style={{ fontSize: 16, marginBottom: 15 }}>{props.description}</Text>
-            </View>
-        </ScrollView>
-    );
-}
 
 const styles = StyleSheet.create({
     title: {
@@ -65,27 +26,62 @@ const styles = StyleSheet.create({
     },
 })
 
-export default function EventView() {
-    return (
-        <Discover
-            id='e1'
-            scale={0.80}
-            name='Beer Pong Turnering '
-            location={{
-                name: "Nedenunder",
-                address: "Campusvej 55, Odense M"
-            }}
-            date={{
-                start: new Date('2021-11-01T19:00:00'),
-                end: new Date('2021-11-02T03:00:00')
-            }}
-            orginizer={{
-                name: 'Nedenunder',
-                avatar: 'https://www.nedenunder.dk/wp-content/uploads/2019/06/nedenunder-Logo-300x300.png'
+class EventV extends Component<{ eventId: string }> {
+    state: {
+        event?: IEvent
+        owner?: IUser
+        loading: boolean
+    } = {
+            loading: true
+        }
 
-            }}
-            image='https://images.interactives.dk/beerpong-woman-dk-M_gSy7-yyJsqSjEXUI8hkQ.jpg'
-            description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget ornare quam. Quisque posuere imperdiet sem at pretium. Fusce et facilisis metus, ut faucibus lectus. Suspendisse at ultricies risus. Ut id tristique risus, ut viverra arcu. Ut eu suscipit nunc, eget elementum tortor. Nunc ut lacus vitae libero tempus tempor vel sit amet magna. Ut ac erat fringilla, auctor mi eget, dictum quam. Praesent vestibulum lorem facilisis commodo facilisis. Donec a justo eget sapien tempus tincidunt sit amet ut quam. Maecenas tempor suscipit eros ac porttitor. Aliquam erat volutpat. Fusce lacinia ut mi et malesuada. Aliquam erat volutpat. Phasellus eu luctus quam, id egestas turpis.'
-        />
+    async componentDidMount() {
+        let event = await EventBackend.getEvent(this.props.eventId)
+        let user = event ? await UserBackend.getUser(event.created_by) : undefined
+        this.setState({
+            event: event,
+            owner: user,
+            loading: false
+        })
+    }
+
+    render(): any {
+        if (this.state.loading) {
+            return <ActivityIndicator />
+        }
+
+        if (!this.state.event) {
+            return <Text>Could not load event</Text>
+        }
+
+        return (
+            <ScrollView bounces={false}  >
+                <Image
+                    source={{ uri: this.state.event!.image }}
+                    style={{ width: width, height: width * 9 / 16 }}
+                    resizeMode={'cover'}
+                />
+                <View style={{ marginLeft: 25, marginRight: 25 }}>
+                    <Text numberOfLines={2} style={styles.title}>{this.state.event!.name}</Text>
+                    <DateField start={this.state.event!.date.start} end={this.state.event!.date.end} />
+                    <LocationField name={this.state.event!.location.name} location={this.state.event!.location.address} />
+                    {
+                        this.state.owner
+                            ? <OrginizerField name={this.state.owner!.name} logo={this.state.owner!.avatar ?? ''} />
+                            : <OrginizerField name='Unknown user' logo='' />
+                    }
+
+
+                    <Text style={styles.heading}>Event Description</Text>
+                    <Text style={{ fontSize: 16, marginBottom: 15 }}>{this.state.event!.description}</Text>
+                </View>
+            </ScrollView>
+        )
+    }
+}
+
+export default function EventView(eventId: string) {
+    return (
+        <EventV eventId='1' />
     );
 }
