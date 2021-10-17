@@ -3,11 +3,11 @@ import { ScrollView, View, Text, ActivityIndicator, StyleSheet } from "react-nat
 import { SafeAreaView } from "react-native-safe-area-context";
 import Backend from "../backend/EventBackend";
 import { NearbyEvent } from "../components/NearbyEvent";
-import { UpcomingEvent, IUpcomingEvent } from "../components/UpcomingEvent";
+import { UpcomingEvent } from "../components/UpcomingEvent";
 
 class EventList extends Component {
   state: {
-    events: IUpcomingEvent[],
+    events: IEvent[],
     loading: boolean
   } = {
       events: [],
@@ -15,7 +15,7 @@ class EventList extends Component {
     }
 
   async componentDidMount() {
-    var loadedEvents = await Backend.GetEventOverview();
+    var loadedEvents = await Backend.getAttendingEvents('1');
     this.setState({
       events: loadedEvents,
       loading: false
@@ -34,7 +34,7 @@ class EventList extends Component {
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           {
             this.state.events.map(event => (
-              <UpcomingEvent id={event.id} date={new Date()} name={event.name} location={event.location} image={event.image} />
+              <UpcomingEvent id={event.id} date={new Date()} name={event.name} location={event.location.name ?? event.location.address} image={event.image} />
             ))
           }
         </ScrollView>

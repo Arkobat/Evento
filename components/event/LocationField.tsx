@@ -4,23 +4,23 @@ import { Field } from './AbstractField';
 import openMap from 'react-native-open-maps';
 
 
-export interface IPlaceField {
-    name: string
-    location: string
-}
-
 function startMap(location: string) {
     openMap({ end: location })
 }
 
-function LocationField(props: IPlaceField) {
+function LocationField(props: ILocation) {
     return (
-        <Pressable onPress={() => startMap(props.location)}>
+        <Pressable onPress={() => startMap(props.address)}>
             <Field icon={{ type: 'icon', path: 'map-marker' }} children={
-                <View>
-                    <Text style={styles.name}>{props.name}</Text>
-                    <Text style={styles.location}>{props.location}</Text>
-                </View>
+                props.name ?
+                    <View>
+                        <Text style={styles.name}>{props.name}</Text>
+                        <Text style={styles.location}>{props.address}</Text>
+                    </View> :
+                    <View>
+                        <Text style={styles.name}>{props.address}</Text>
+                    </View>
+
             } />
         </Pressable>
     );

@@ -12,8 +12,16 @@ interface IEvent {
     created_by: string
 }
 
-interface ILocation {
+interface IEventPreview {
+    id: string
     name: string
+    image: string,
+    location: string
+    date: Date,
+}
+
+interface ILocation {
+    name?: string
     address: string
     latitude?: number
     longitude?: number

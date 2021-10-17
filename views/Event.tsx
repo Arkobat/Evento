@@ -64,7 +64,7 @@ class EventV extends Component<{ eventId: string }> {
                 <View style={{ marginLeft: 25, marginRight: 25 }}>
                     <Text numberOfLines={2} style={styles.title}>{this.state.event!.name}</Text>
                     <DateField start={this.state.event!.date.start} end={this.state.event!.date.end} />
-                    <LocationField name={this.state.event!.location.name} location={this.state.event!.location.address} />
+                    <LocationField name={this.state.event.location.name} address={this.state.event.location.address} />
                     {
                         this.state.owner
                             ? <OrginizerField name={this.state.owner!.name} logo={this.state.owner!.avatar ?? ''} />
@@ -82,6 +82,6 @@ class EventV extends Component<{ eventId: string }> {
 
 export default function EventView(eventId: string) {
     return (
-        <EventV eventId='1' />
+        <EventV eventId='5' />
     );
 }

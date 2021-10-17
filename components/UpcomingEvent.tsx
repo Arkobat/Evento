@@ -7,15 +7,7 @@ const imgWidth = (Dimensions.get('screen').width - boxMargin * 2) * 0.80
 const imgHeight = imgWidth * 9 / 16
 import { format } from "date-fns";
 
-export interface IUpcomingEvent {
-    id: string
-    name: string
-    location: string
-    image: string
-    date: Date
-}
-
-function UpcomingEvent(props: IUpcomingEvent) {
+function UpcomingEvent(props: IEventPreview) {
     return (
         <View style={[styles.card, styles.shadowProp]}>
             <View style={{ width: imgWidth }}>

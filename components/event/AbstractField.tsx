@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
         height: 50,
         margin: 5,
         marginRight: 15,
+        borderRadius: 10,
     },
     iconBox: {
         backgroundColor: 'lightgray',
-        borderRadius: 10,
     },
     box: {
         marginTop: 10,
